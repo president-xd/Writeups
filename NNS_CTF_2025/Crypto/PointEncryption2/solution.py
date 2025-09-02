@@ -28,7 +28,7 @@ def check_top(a, b, c, d):
     if c == a:
         return d == b
     else:
-        t = (c*2 + (1 - d2) - a2 - (1 - b)*2) / (2 * (c - a))
+        t = (c*2 + (1 - d) - a2 - (1 - b)*2) / (2 * (c - a))
         return 0 <= t <= 1
 
 def compute_bit(a, b, point):
