@@ -1,0 +1,9 @@
+services:
+  curvy:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dist
+    ports:
+      - 31337:8000
+    cap_add:
+      - NET_ADMIN

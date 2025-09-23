@@ -1,0 +1,5 @@
+FROM theflash2k/pwn-chal:sagemath
+
+ENV CHAL_NAME="challenge.sage"
+COPY ${CHAL_NAME} .
+COPY flag.txt .
