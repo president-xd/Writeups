@@ -1,0 +1,1 @@
+/home/noobmaster/scriptctf-solana-chall/solve/target/sbpf-solana-solana/release/solve.so: /home/noobmaster/scriptctf-solana-chall/solve/src/lib.rs /home/noobmaster/scriptctf-solana-chall/solve/src/processor.rs

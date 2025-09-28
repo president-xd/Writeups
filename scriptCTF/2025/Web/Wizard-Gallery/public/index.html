@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wizard Gallery - Dark Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="wizard-container">
+        <h1 class="wizard-title">🧙‍♂️ Wizard Gallery</h1>
+        
+        <div class="logo-container">
+            <img src="/logo.png" alt="Wizard Gallery Logo" class="logo-image" id="logo-img">
+        </div>
+        
+        <div id="flash-container"></div>
+        
+        <p class="description">
+            Welcome to the mystical Wizard Gallery portal. Upload your magical images to add them to the collection.
+        </p>
+        
+        <form class="upload-form" id="upload-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file-upload" class="form-label">Choose Your Magical Image</label>
+                <input 
+                    type="file" 
+                    id="file-upload" 
+                    name="file" 
+                    class="file-input"
+                    accept="image/*"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="upload-button" id="upload-btn">
+                    Cast Upload Spell ✨
+                </button>
+            </div>
+        </form>
+        
+        <div class="description">
+            <p><strong>Supported enchantments:</strong> Images (JPG, PNG, GIF, BMP, WEBP)</p>
+            <p>Maximum spell power: 10MB per image</p>
+        </div>
+    </div>
+
+    <script>
+        function showFlashMessage(message, type) {
+            const container = document.getElementById('flash-container');
+            const flashDiv = document.createElement('div');
+            flashDiv.className = `flash-message flash-${type}`;
+            
+            const messageText = document.createElement('span');
+            messageText.textContent = message;
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '×';
+            closeBtn.className = 'flash-close-btn';
+            closeBtn.onclick = function() {
+                flashDiv.style.opacity = '0';
+                setTimeout(() => {
+                    if (flashDiv.parentNode) {
+                        container.removeChild(flashDiv);
+                    }
+                }, 300);
+            };
+            
+            flashDiv.appendChild(messageText);
+            flashDiv.appendChild(closeBtn);
+            
+            container.innerHTML = '';
+            container.appendChild(flashDiv);
+        }
+
+        document.getElementById('upload-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const fileInput = document.getElementById('file-upload');
+            const uploadBtn = document.getElementById('upload-btn');
+            
+            if (!fileInput.files[0]) {
+                showFlashMessage('No file selected! Please choose a magical image to upload.', 'error');
+                return;
+            }
+            
+            formData.append('file', fileInput.files[0]);
+            
+            uploadBtn.textContent = 'Casting Spell... ⏳';
+            uploadBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showFlashMessage(result.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = result.redirect;
+                    }, 2000);
+                } else {
+                    showFlashMessage(result.message, 'error');
+                }
+            } catch (error) {
+                showFlashMessage('Something went wrong with the spell! Please try again.', 'error');
+            }
+            
+            uploadBtn.textContent = 'Cast Upload Spell ✨';
+            uploadBtn.disabled = false;
+            fileInput.value = '';
+        });
+
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        }
+
+        if (isMobileDevice()) {
+            document.getElementById('logo-img').src = '/logo-sm.png';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Image</title>
+<style>
+    iframe {
+        max-width: 600px; 
+        max-height: 600px; 
+        border: hidden; 
+        overflow: none
+    }
+</style>
+</head>
+<body>
+    <h1>Uploaded Image</h1>
+    <iframe src="{{'/static/uploads/' + filename }}" alt="Uploaded Image"></iframe>
+    <p><a href="/">Upload another image</a></p>
+</body>
+</html>
