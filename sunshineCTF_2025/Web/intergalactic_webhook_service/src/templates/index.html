@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Intergalactic Webhook Service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      :root{
+        --bg-0:#05070d;
+        --bg-1:#0a0f1a;
+        --nebula-a:#1a2a88;
+        --nebula-b:#6b1a7a;
+        --nebula-c:#0d5f6a;
+        --star:#e6f1ff;
+        --accent:#8ef9ff;
+        --accent-2:#7cffc4;
+        --muted:#9fb4cc;
+        --text:#e8f6ff;
+        --shadow: 0 0 40px #7cffc422, 0 0 60px #8ef9ff22, inset 0 0 0 1px #ffffff10;
+        --radius: 16px;
+      }
+
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{
+        margin:0; color:var(--text);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
+        line-height:1.5; overflow-x:hidden; background: var(--bg-0);
+      }
+
+      .space{
+        position:fixed; inset:0; overflow:hidden; z-index:-3;
+        background:
+          radial-gradient(1200px 800px at 80% -10%, #0a1030 0%, transparent 60%),
+          radial-gradient(800px 600px at -10% 110%, #001a12 0%, transparent 60%),
+          linear-gradient(180deg, var(--bg-0), var(--bg-1));
+      }
+      .space::before,
+      .space::after{
+        content:"";
+        position:absolute; inset:-20%;
+        background-image:
+          radial-gradient(2px 2px at 20% 30%, #fff8, transparent 40%),
+          radial-gradient(1.5px 1.5px at 70% 60%, #fff6, transparent 40%),
+          radial-gradient(1.8px 1.8px at 40% 80%, #fff7, transparent 40%),
+          radial-gradient(1.2px 1.2px at 85% 25%, #fff5, transparent 40%),
+          radial-gradient(1.4px 1.4px at 55% 15%, #fff7, transparent 40%);
+        animation: drift-stars 120s linear infinite;
+        opacity:.8;
+      }
+      .space::after{
+        filter: blur(0.3px);
+        animation-duration: 180s;
+        opacity:.6;
+      }
+      @keyframes drift-stars { to { transform: translate3d(-100px, -120px, 0); } }
+
+      /* Floating nebula clouds */
+      .nebula{
+        position:fixed; inset:-20%; z-index:-2; pointer-events:none; mix-blend-mode:screen; opacity:.5;
+        background:
+          radial-gradient(800px 600px at 20% 30%, #6b1a7a33, transparent 60%),
+          radial-gradient(700px 500px at 80% 40%, #1a2a8833, transparent 60%),
+          radial-gradient(600px 500px at 50% 80%, #0d5f6a33, transparent 60%);
+        animation: swirl 60s ease-in-out infinite alternate;
+      }
+      @keyframes swirl { to { transform: translate3d(40px, -20px, 0) scale(1.03); } }
+
+      .crt::after{
+        content:""; position:fixed; inset:0; pointer-events:none;
+        background: repeating-linear-gradient(0deg, #0000, #0000 2px, #0003 3px, #0000 4px);
+        mix-blend-mode:overlay; opacity:.2;
+      }
+
+      .wrap{ max-width:980px; margin:0 auto; padding:56px 24px 84px; position:relative; }
+
+      .title{
+        font-size:clamp(28px, 5vw, 56px);
+        line-height:1.1; margin:0 0 8px; letter-spacing:.6px; position:relative; display:inline-block;
+        text-shadow: 0 0 0 #fff, 0 0 18px #7cffc445, 0 0 36px #8ef9ff33;
+      }
+      .title .glitch{
+        position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.4;
+        text-shadow: 1px 0 var(--accent), -1px 0 var(--accent-2);
+        animation:glitch 2.4s infinite;
+      }
+      @keyframes glitch{
+        0%{transform:translate(0,0)} 12%{transform:translate(1px,-1px)}
+        22%{transform:translate(-1px,1px)} 35%{transform:translate(0,0)}
+        55%{transform:translate(2px,0)} 65%{transform:translate(-2px,0)} 100%{transform:translate(0,0)}
+      }
+      .subtitle{ margin:0 0 28px; color:var(--muted); font-size:clamp(14px, 2.2vw, 18px); }
+
+      /* Decorative planet near the header */
+      .planet{
+        position:absolute; right: -60px; top: -40px; width:160px; height:160px; border-radius:50%;
+        background:
+          radial-gradient(circle at 35% 35%, #ffffff, #c6f7ff 18%, #73f3ff 28%, #2bd3ff 42%, #1b5f96 70%, #0a2740 100%);
+        box-shadow:
+          0 0 60px #2bd3ff44,
+          inset -12px -18px 40px #091a2eaa;
+        filter: saturate(1.1);
+        z-index:-1;
+      }
+      .planet::after{
+        content:"";
+        position:absolute; inset:-10%;
+        border-radius:50%;
+        background:
+          radial-gradient(120px 40px at 50% 50%, #bffcff66, #bffcff00 60%);
+        transform: rotateX(70deg);
+        filter: blur(1px);
+      }
+
+      .panel{
+        background:linear-gradient(180deg, #0a1221dd, #0b1326dd);
+        border:1px solid #1c2b3d; border-radius:var(--radius);
+        box-shadow: var(--shadow); padding:22px; position:relative; overflow:hidden;
+      }
+      .panel::before{
+        content:""; position:absolute; inset:0; pointer-events:none;
+        background:
+          radial-gradient(360px 140px at 105% -5%, #8ef9ff1f, transparent 60%),
+          radial-gradient(240px 120px at -5% 105%, #7cffc41a, transparent 60%);
+      }
+      .panel + .panel{ margin-top:18px; }
+      .panel h2{
+        margin:0 0 14px; font-size:20px; letter-spacing:.3px; display:flex; align-items:center; gap:12px; position:relative;
+      }
+      .orbit{
+        width:14px; height:14px; border-radius:999px; background: radial-gradient(circle at 30% 30%, #fff, var(--accent));
+        box-shadow:0 0 12px var(--accent);
+        position:relative;
+      }
+      .orbit::after{
+        content:""; position:absolute; inset:-8px; border-radius:999px;
+        border:1px dashed #5fe6ff55; animation: spin 6s linear infinite;
+      }
+      @keyframes spin{ to{ transform: rotate(360deg);} }
+
+      form{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+      .input-wrap{ position:relative; flex:1 1 420px; }
+      .input-wrap svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.65; }
+
+      input[type="text"]{
+        flex:1 1 420px; min-width:220px; padding:14px 14px 14px 42px;
+        background:#060b15; border:1px solid #1a2a3c; color:var(--text);
+        border-radius:12px; outline:none; transition:border-color .2s, box-shadow .2s;
+        box-shadow: inset 0 0 0 1px #0006, 0 0 0 0 #7cffc400;
+      }
+      input[type="text"]::placeholder{ color:#9fb4cc88 }
+      input[type="text"]:focus{
+        border-color:#8ef9ff88;
+        box-shadow:0 0 0 3px #8ef9ff22, inset 0 0 0 1px #0008;
+      }
+
+      button[type="submit"]{
+        appearance:none; border:0; cursor:pointer; padding:14px 18px; border-radius:12px; font-weight:800;
+        color:#02101a; background:linear-gradient(90deg, var(--accent-2), var(--accent));
+        box-shadow:0 8px 24px #00e4ff29, 0 0 0 0 #8ef9ff00, inset 0 0 0 1px #ffffff22;
+        transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
+        text-transform:uppercase; letter-spacing:.6px;
+        position:relative; overflow:hidden;
+      }
+      button[type="submit"]::after{
+        content:""; position:absolute; left:-20%; top:0; width:20%; height:100%;
+        background: linear-gradient(90deg, #ffffff88, #ffffff00 60%);
+        transform: skewX(-18deg); filter: blur(1px); opacity:0;
+      }
+      button[type="submit"]:hover{
+        filter:saturate(1.15) brightness(1.05);
+        box-shadow:0 8px 24px #00e4ff40, 0 0 24px #8ef9ff33;
+      }
+      button[type="submit"]:hover::after{ animation: sweep .7s ease forwards; }
+      @keyframes sweep { from{left:-30%; opacity:0} 40%{opacity:1} to{left:120%; opacity:0} }
+      button[type="submit"]:active{ transform:translateY(1px) scale(.99) }
+
+      .rule{
+        height:1px; border:0; margin:28px 0 22px;
+        background:
+          radial-gradient(6px 6px at 0 50%, #89f7ff, #89f7ff00 60%),
+          linear-gradient(90deg, #0000, #1c2a3a, #0000);
+      }
+
+      /* Corner HUD */
+      .corner{
+        position:fixed; right:18px; bottom:18px; opacity:.92; display:flex; gap:10px; align-items:center;
+        font-size:12px; color:#b7cbe0; padding:10px 12px; border-radius:12px;
+        border:1px solid #213247; background:#081324cc; backdrop-filter: blur(6px); box-shadow: var(--shadow);
+      }
+      .corner .led{
+        width:8px; height:8px; border-radius:999px;
+        background:radial-gradient(circle at 40% 40%, #fff, #7cffc4);
+        box-shadow:0 0 10px #7cffc4, 0 0 30px #7cffc455;
+      }
+
+      /* Responsive */
+      @media (max-width:520px){
+        .wrap{ padding-top:40px }
+        .panel h2{ font-size:18px }
+        button[type="submit"]{ width:100% }
+        .planet{ display:none }
+      }
+    </style>
+  </head>
+
+  <body class="crt">
+    <!-- Background layers -->
+    <div class="space"></div>
+    <div class="nebula"></div>
+
+    <div class="wrap">
+      <div class="planet" aria-hidden="true"></div>
+
+      <h1 class="title">
+        Webhook as a Service
+        <span class="glitch" aria-hidden="true">Webhook as a Service</span>
+      </h1>
+
+      <p class="subtitle">Welcome to the Intergalactic Webhook Service! Create your own webhook today!</p>
+
+      <hr class="rule" />
+
+      <section class="panel">
+        <h2><span class="orbit" aria-hidden="true"></span> Register Webhook</h2>
+        <form method="POST" action="/register" autocomplete="on">
+          <label class="sr-only" for="url">Webhook URL</label>
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M10.5 13.5l-2 2a3.5 3.5 0 105-5l-1-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M13.5 10.5l2-2a3.5 3.5 0 10-5 5l1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <input type="text" id="url" name="url" placeholder="https://example.com" size="50" required />
+          </div>
+          <button type="submit">Register</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2><span class="orbit" aria-hidden="true"></span> Trigger Webhook</h2>
+        <form method="POST" action="/trigger" autocomplete="on">
+          <label class="sr-only" for="id">Webhook ID</label>
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="7.25" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <input type="text" id="id" name="id" placeholder="Webhook ID" size="36" required />
+          </div>
+          <button type="submit">Launch</button>
+        </form>
+      </section>
+    </div>
+
+    <div class="corner" aria-hidden="true">
+      <span class="led"></span> <span>ORBITAL RELAY • STANDBY…</span>
+    </div>
+
+    <script>
+      (function(){
+        const forms = document.querySelectorAll("form");
+        forms.forEach(f=>{
+          f.addEventListener("keydown", (e)=>{
+            if(e.key === "Enter" && (e.metaKey || e.ctrlKey)){
+              e.preventDefault(); f.submit();
+            }
+          });
+          f.addEventListener("submit", ()=>{
+            const btn = f.querySelector('button[type="submit"]');
+            if(!btn) return;
+            btn.animate(
+              [{transform:'translateZ(0) scale(1)'},
+               {transform:'translateZ(0) scale(1.05)'},
+               {transform:'translateZ(0) scale(1)'}],
+              {duration:260, easing:'cubic-bezier(.2,.9,.3,1)'}
+            );
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
+
