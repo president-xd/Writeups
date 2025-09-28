@@ -1,6 +1,0 @@
-.gradle
-build
-.dockerignore
-.gitattributes
-.gitignore
-Dockerfile

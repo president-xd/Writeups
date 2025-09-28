@@ -1,6 +1,0 @@
-services:
-  minimal:
-    build: .
-    ports:
-      - 1337:5000 # 1337 is port to use
-    privileged: true
