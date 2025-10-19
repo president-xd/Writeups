@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+
+RUN mkdir /app
+WORKDIR /app
+ENV CHAL_NAME="chal.py"
+COPY ${CHAL_NAME} /app/${CHAL_NAME} 
+COPY flag.txt /flag.txt
+EXPOSE 5000
+RUN pip install numpy
+
+CMD ["python3", "chal.py"]
