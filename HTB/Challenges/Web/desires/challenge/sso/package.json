@@ -1,0 +1,19 @@
+{
+  "name": "sso",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "sqlite3": "^5.1.7"
+  }
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Admin | Enigma Puzzled</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background styles */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            z-index: -2;
+        }
+
+        .gradient {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.15), transparent 50%);
+            z-index: -1;
+        }
+
+        /* Container styles */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        /* Card styles */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-out;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo styles */
+        .logo {
+            margin-bottom: 2rem;
+        }
+
+        .crown-icon {
+            color: #ff6b00;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Typography styles */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        .quote {
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-style: italic;
+            color: #ff6b00;
+            margin-bottom: 2rem;
+        }
+
+        .cta {
+            font-size: 1.125rem;
+            margin: 2rem 0;
+        }
+
+        /* Divider styles */
+        .divider {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+            margin: 2rem auto;
+        }
+
+        /* Button styles */
+        .enter-button {
+            background: linear-gradient(135deg, #ff6b00, #ff8533);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .enter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        .enter-button:active {
+            transform: translateY(0);
+        }
+
+        /* Footer styles */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 480px) {
+            .card {
+                padding: 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .quote {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background">
+        <div class="gradient"></div>
+    </div>
+
+    <main class="container">
+        <div class="card">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="crown-icon">
+                    <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14" />
+                </svg>
+            </div>
+            <h1>Welcome, Game Admin!</h1>
+            <p class="subtitle">Your enigma puzzled the audience</p>
+            <p class="quote">and made you the new king</p>
+            <div class="divider"></div>
+            <p class="cta">Start managing your kingdom now!</p>
+            <button class="enter-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                    <path d="M5 3v4" />
+                    <path d="M19 17v4" />
+                    <path d="M3 5h4" />
+                    <path d="M17 19h4" />
+                </svg>
+                Enter Dashboard
+            </button>
+            {{.FLAG}}
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Enigma Games. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
