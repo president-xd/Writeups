@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smesh</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            color: #e4e7f0;
+        }
+        
+        .topbar {
+            background: rgba(15, 18, 35, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            font-size: 1.6em;
+            font-weight: 700;
+            background: linear-gradient(120deg, #5865f2, #ed4264);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .credits-badge {
+            background: rgba(88, 101, 242, 0.15);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #7289da;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            font-size: 0.9em;
+        }
+        
+        .admin-tag {
+            background: linear-gradient(120deg, #ffd700, #ff8c00);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-menu a {
+            color: #b8bfd9;
+            text-decoration: none;
+            margin-left: 28px;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: #5865f2;
+        }
+        
+        .main-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.1), rgba(237, 66, 100, 0.1));
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            background: linear-gradient(120deg, #fff, #b8bfd9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-section p {
+            color: #8b92b8;
+            font-size: 1.1em;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 45px;
+        }
+        
+        .action-box {
+            background: rgba(20, 25, 45, 0.6);
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #5865f2, #ed4264);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .action-box:hover {
+            transform: translateY(-5px);
+            border-color: rgba(88, 101, 242, 0.3);
+        }
+        
+        .action-box:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .action-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .action-box h3 {
+            color: #e4e7f0;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .action-box p {
+            color: #8b92b8;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .action-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgba(88, 101, 242, 0.15);
+            color: #7289da;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+        }
+        
+        .action-btn:hover {
+            background: #5865f2;
+            color: #fff;
+        }
+        
+        .posts-container {
+            background: rgba(20, 25, 45, 0.6);
+            padding: 35px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .posts-container h2 {
+            color: #e4e7f0;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        
+        .post-item {
+            background: rgba(30, 35, 55, 0.4);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: border-color 0.3s ease;
+        }
+        
+        .post-item:hover {
+            border-color: rgba(88, 101, 242, 0.3);
+        }
+        
+        .post-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .post-item h3 {
+            color: #7289da;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+        
+        .post-item p {
+            color: #b8bfd9;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        .post-meta {
+            color: #6b7397;
+            font-size: 0.85em;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6b7397;
+        }
+        
+        .empty-state p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="brand">smesh</div>
+        <div class="user-section">
+            <div class="credits-badge">⚡ <%= user.credits %> credits</div>
+            <% if (isAdmin) { %>
+                <span class="admin-tag">Admin</span>
+            <% } %>
+            <div class="nav-menu">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/analytics">Analytics</a>
+                <% if (isAdmin) { %>
+                    <a href="/admin">Control</a>
+                <% } %>
+                <a href="/logout">Exit</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="hero-section">
+            <h1>Welcome back, <%= user.username %></h1>
+            <p>Manage your content and track performance from your dashboard</p>
+        </div>
+
+        <div class="quick-actions">
+            <div class="action-box">
+                <div class="action-icon">📝</div>
+                <h3>New Post</h3>
+                <p>Share your latest updates with your audience</p>
+                <a href="/create-post" class="action-btn">Create</a>
+            </div>
+            <div class="action-box">
+                <div class="action-icon">📊</div>
+                <h3>Analytics</h3>
+                <p>View insights and engagement metrics</p>
+                <a href="/analytics" class="action-btn">View Stats</a>
+            </div>
+            <div class="action-box">
+                <div class="action-icon">⚙️</div>
+                <h3>Preferences</h3>
+                <p>Customize your dashboard experience</p>
+                <a href="#" onclick="openPreferences(); return false;" class="action-btn">Configure</a>
+            </div>
+        </div>
+
+        <div class="posts-container">
+            <h2>Your Content</h2>
+            <% if (posts.length === 0) { %>
+                <div class="empty-state">
+                    <p>No posts yet. Start creating to build your presence!</p>
+                </div>
+            <% } else { %>
+                <% posts.forEach(post => { %>
+                    <div class="post-item">
+                        <h3><%= post.title %></h3>
+                        <p><%= post.content %></p>
+                        <div class="post-meta">Posted <%= new Date(post.createdAt).toLocaleString() %></div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        function openPreferences() {
+            const theme = prompt("Theme preference (dark/light/auto):");
+            const language = prompt("Language (en/es/fr/de):");
+            if (theme && language) {
+                updateSettings(theme, language);
+            }
+        }
+
+        function updateSettings(theme, language) {
+            fetch('/api/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ theme: theme, language: language, notifications: true })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Preferences updated successfully');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

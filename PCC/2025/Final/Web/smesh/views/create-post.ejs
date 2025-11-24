@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post - Smesh</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            color: #e4e7f0;
+        }
+        
+        .topbar {
+            background: rgba(15, 18, 35, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .brand {
+            font-size: 1.6em;
+            font-weight: 700;
+            background: linear-gradient(120deg, #5865f2, #ed4264);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-menu a {
+            color: #b8bfd9;
+            text-decoration: none;
+            margin-left: 28px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: #5865f2;
+        }
+        
+        .main-content {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 30px;
+        }
+        
+        .editor-container {
+            background: rgba(20, 25, 45, 0.6);
+            padding: 45px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        h1 {
+            color: #e4e7f0;
+            margin-bottom: 35px;
+            font-size: 2.2em;
+        }
+        
+        .error {
+            background: rgba(237, 66, 100, 0.1);
+            color: #ff6b6b;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 3px solid #ed4264;
+        }
+        
+        .input-group {
+            margin-bottom: 28px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #b8bfd9;
+            font-weight: 500;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 16px;
+            background: rgba(30, 35, 55, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #e4e7f0;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        textarea {
+            min-height: 220px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #5865f2;
+            background: rgba(30, 35, 55, 0.8);
+            box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: #6b7397;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 16px 30px;
+            background: linear-gradient(120deg, #5865f2, #7289da);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
+        }
+        
+        .back-btn {
+            background: rgba(88, 101, 242, 0.15);
+            color: #7289da;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(88, 101, 242, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .cost-note {
+            color: #8b92b8;
+            font-size: 0.9em;
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="brand">smesh</div>
+        <div class="nav-menu">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Exit</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="editor-container">
+            <h1>Create New Post</h1>
+            
+            <% if (error) { %>
+                <div class="error"><%= error %></div>
+            <% } %>
+            
+            <form method="POST" action="/create-post">
+                <div class="input-group">
+                    <label for="title">Post Title</label>
+                    <input type="text" id="title" name="title" placeholder="Enter an engaging title..." required>
+                </div>
+                <div class="input-group">
+                    <label for="content">Content</label>
+                    <textarea id="content" name="content" placeholder="What's on your mind?" required></textarea>
+                </div>
+                <div class="button-group">
+                    <a href="/dashboard" class="back-btn">← Cancel</a>
+                    <button type="submit">Publish (5 credits)</button>
+                </div>
+                <div class="cost-note">Publishing costs 5 credits • Your posts are visible immediately</div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

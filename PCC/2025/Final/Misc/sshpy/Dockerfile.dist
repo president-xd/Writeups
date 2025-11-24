@@ -1,0 +1,27 @@
+FROM python:3.13-slim-bullseye@sha256:e98b521460ee75bca92175c16247bdf7275637a8faaeb2bcfa19d879ae5c4b9a
+
+WORKDIR /app
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN rm -rf /var/lib/apt/lists/* && \
+    apt update && \
+    apt install -y less openssh-server && \
+    apt clean -y && \
+    apt autoclean -y && \
+    rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir chardet
+
+RUN echo "exec bash -c 'while [[ 1 ]]; do /usr/local/bin/python3.13 /app/jail.py; done'" > /usr/bin/jail && \
+    chmod 555 /usr/bin/jail
+
+RUN useradd -m -d /app -s /bin/bash pcc && \
+    echo "pcc:pyjail" | chpasswd
+
+RUN echo "AllowUsers pcc" >> /etc/ssh/sshd_config
+RUN echo "ForceCommand /usr/bin/jail" >> /etc/ssh/sshd_config
+
+COPY --chown=root:pcc --chmod=750 jail.py /app
+COPY --chown=root:pcc --chmod=440 flag.txt /
+
+RUN mkdir -p /run/sshd
+CMD ["/usr/sbin/sshd","-D"]

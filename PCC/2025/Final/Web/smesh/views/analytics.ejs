@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Smesh</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            color: #e4e7f0;
+        }
+        
+        .topbar {
+            background: rgba(15, 18, 35, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .brand {
+            font-size: 1.6em;
+            font-weight: 700;
+            background: linear-gradient(120deg, #5865f2, #ed4264);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-menu a {
+            color: #b8bfd9;
+            text-decoration: none;
+            margin-left: 28px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: #5865f2;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 30px;
+        }
+        
+        .analytics-wrap {
+            background: rgba(20, 25, 45, 0.6);
+            padding: 45px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        h1 {
+            color: #e4e7f0;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+        }
+        
+        .locked-notice {
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.15), rgba(237, 66, 100, 0.15));
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .locked-notice h3 {
+            color: #e4e7f0;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .locked-notice p {
+            color: #b8bfd9;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .upgrade-box {
+            background: rgba(88, 101, 242, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            margin-top: 25px;
+        }
+        
+        .upgrade-box p {
+            color: #7289da;
+            font-weight: 500;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.2), rgba(114, 137, 218, 0.1));
+            padding: 35px;
+            border-radius: 16px;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #5865f2, #7289da);
+        }
+        
+        .metric-label {
+            color: #b8bfd9;
+            font-size: 0.95em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .metric-value {
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(120deg, #5865f2, #ed4264);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 35px;
+            color: #7289da;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #5865f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="brand">smesh</div>
+        <div class="nav-menu">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Exit</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="analytics-wrap">
+            <h1>📊 Performance Analytics</h1>
+            
+            <% if (error) { %>
+                <div class="locked-notice">
+                    <h3>🔒 Premium Feature</h3>
+                    <p><%= error %></p>
+                    <div class="upgrade-box">
+                        <p>💎 Unlock detailed analytics, engagement tracking, and audience insights with Premium</p>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Total Posts</div>
+                        <div class="metric-value"><%= analytics.totalPosts %></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Total Views</div>
+                        <div class="metric-value"><%= analytics.totalViews %></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Engagement</div>
+                        <div class="metric-value"><%= analytics.avgEngagement.toFixed(1) %>%</div>
+                    </div>
+                </div>
+            <% } %>
+            
+            <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

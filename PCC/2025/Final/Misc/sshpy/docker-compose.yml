@@ -1,0 +1,9 @@
+services:
+  sshpy:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dist
+    ports:
+      - 31337:22
+    cap_add:
+      - NET_ADMIN
