@@ -1,0 +1,8 @@
+services:
+  quill:
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      PORT: 3000
+      DYN_FLAG: "BHFlagY{this_is_a_fake_flag}"
