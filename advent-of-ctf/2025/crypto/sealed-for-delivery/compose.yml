@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  sealed-for-delivery:
+    build: .
+    image: sealed-for-delivery
+    container_name: sealed-for-delivery
+    ports:
+      - "1337:1337"
+    restart: unless-stopped

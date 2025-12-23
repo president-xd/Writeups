@@ -1,0 +1,9 @@
+msg: b'Beware the Krampus Syndicate!'
+r  : a4312e31e6803220d694d1040391e8b7cc25a9b2592245fb586ce90a2b010b63
+s  : e54321716f79543591ab4c67e989af3af301e62b3b70354b04e429d57f85aa2e
+msg: b'Santa is watching...'
+r  : 6c5f7047d21df064b3294de7d117dd1f7ccf5af872d053f12bddd4c6eb9f6192
+s  : 1ccf403d4a520bc3822c300516da8b29be93423ab544fb8dbff24ca0e1368367
+msg: b'Good luck getting the key'
+r  : 2c15aceb49e63e4a2c8357102fbd345ac2cbd1b214c77fba0cd9ffe8d20d2c1e
+s  : 1ee49ef3857ad1d9ff3109bfb4a91cb464ab6fdc88ace610ead7e6dee0957d95
