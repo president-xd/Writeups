@@ -1,0 +1,17 @@
+# Fruit shipment log
+# class 3 picnic – apples & tangerines
+# 오름차순
+
+[BOX_A]
+ratio_apples_to_tangerines=2:3
+
+[BOX_B]
+ratio_apples_to_tangerines=4:7
+
+[NOTE]
+total_tangerines_are_107_more_than_total_apples
+total_fruits_ratio_A_to_B_is_5_to_32
+b_ga_real_im
+
+[CHECK]
+shipping_code=R01ZVEdNUlRHSVpUS01aWEdNNFRHTUpUSEVaVE1NWlFHTTJER09CVEdZWlRRTVpVR00zVEdNUlRHRVpUTU1aVkdNMlRHT0pUR0laVElNWlJHTVlER05KVEc0WlRDTVpTR00zVEdOUlRHUVpUR01aWEdNWlRHTkpUR0FaVE1NWlJHTVpUR01aVEhFWlRFTVpSR000VEdOUlRHRVpUQ01aWkdNWURHTVpUR1FaVENNWlpHTTNUR09KVEdZWlRRTVpYR00zVEdOUlRHNFpUQU1aWEdNMkRHTVpUR0FaVEFNWlVHTTRUR05SVEdBWlRNTVpTR01aREdNWlRIQVpUS01aUkdNM1RHTkE9
