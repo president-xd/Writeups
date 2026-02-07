@@ -1,0 +1,476 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.exploit
+#1 transferring dockerfile: 848B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ubuntu:22.04
+#2 ...
+
+#3 [auth] library/ubuntu:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ubuntu:22.04
+#2 DONE 1.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [ 1/11] FROM docker.io/library/ubuntu:22.04@sha256:c7eb020043d8fc2ae0793fb35a37bff1cf33f156d4d4b12ccc7f3ef8706c38b1
+#5 resolve docker.io/library/ubuntu:22.04@sha256:c7eb020043d8fc2ae0793fb35a37bff1cf33f156d4d4b12ccc7f3ef8706c38b1 0.0s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 34.21kB 0.0s done
+#6 DONE 0.0s
+
+#7 [ 2/11] RUN apt-get update && apt-get install -yq     build-essential     cmake     libssl-dev     python3     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [ 3/11] WORKDIR /chall
+#8 CACHED
+
+#9 [ 4/11] COPY dist/emp-tool /chall/emp-tool
+#9 CACHED
+
+#10 [ 5/11] COPY dist/emp-ot /chall/emp-ot
+#10 CACHED
+
+#11 [ 6/11] COPY dist/emp-zk /chall/emp-zk
+#11 CACHED
+
+#12 [ 7/11] COPY dist/install.py /chall/install.py
+#12 CACHED
+
+#13 [ 8/11] COPY exploit/client.cpp /chall/emp-zk/test/arith/client.cpp
+#13 DONE 0.1s
+
+#14 [ 9/11] COPY exploit/solve.py /chall/solve.py
+#14 DONE 0.1s
+
+#15 [10/11] RUN python3 install.py --deps --tool --ot
+#15 0.566 Reading package lists...
+#15 0.585 Building dependency tree...
+#15 0.586 Reading state information...
+#15 0.588 E: Unable to locate package software-properties-common
+#15 1.882 Get:1 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+#15 1.952 Get:2 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+#15 4.367 Get:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+#15 4.784 Get:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+#15 5.206 Get:5 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+#15 5.541 Get:6 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+#15 5.609 Get:7 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [62.6 kB]
+#15 7.184 Get:8 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [6388 kB]
+#15 14.58 Get:9 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+#15 15.39 Get:10 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+#15 15.52 Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [70.9 kB]
+#15 15.53 Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [4014 kB]
+#15 17.25 Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1608 kB]
+#15 17.83 Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6607 kB]
+#15 21.06 Get:15 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [83.9 kB]
+#15 21.06 Get:16 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [37.2 kB]
+#15 74.82 Get:17 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1297 kB]
+#15 97.75 Get:18 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3677 kB]
+#15 157.0 Fetched 44.2 MB in 2min 33s (289 kB/s)
+#15 157.0 Reading package lists...
+#15 158.6 Reading package lists...
+#15 160.4 Building dependency tree...
+#15 160.9 Reading state information...
+#15 162.5 build-essential is already the newest version (12.9ubuntu3).
+#15 162.5 cmake is already the newest version (3.22.1-1ubuntu1.22.04.2).
+#15 162.5 libssl-dev is already the newest version (3.0.2-0ubuntu1.21).
+#15 162.5 0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+#15 162.8 -- The C compiler identification is GNU 11.4.0
+#15 163.0 -- The CXX compiler identification is GNU 11.4.0
+#15 163.0 -- Detecting C compiler ABI info
+#15 163.1 -- Detecting C compiler ABI info - done
+#15 163.1 -- Check for working C compiler: /usr/bin/cc - skipped
+#15 163.1 -- Detecting C compile features
+#15 163.1 -- Detecting C compile features - done
+#15 163.1 -- Detecting CXX compiler ABI info
+#15 163.2 -- Detecting CXX compiler ABI info - done
+#15 163.2 -- Check for working CXX compiler: /usr/bin/c++ - skipped
+#15 163.2 -- Detecting CXX compile features
+#15 163.2 -- Detecting CXX compile features - done
+#15 163.2 [34m-- Platform: x86_64[m
+#15 163.2 -- [34mBuild type: Release[m
+#15 163.2 -- CXX Flags:   -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -std=c++11 -O3
+#15 163.2 -- Performing Test RDSEED_RUN_RESULT
+#15 163.6 -- Performing Test RDSEED_RUN_RESULT - Success
+#15 163.6 [32m-- Source of Randomness: rdseed[m
+#15 163.6 -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+#15 163.6 -- Configuring done
+#15 163.7 -- Generating done
+#15 163.7 -- Build files have been written to: /chall/emp-tool
+#15 163.7 [  2%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/emp-tool.cpp.o
+#15 164.8 [  4%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_add.cpp.o
+#15 165.8 [  6%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_cos.cpp.o
+#15 166.9 [  8%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_div.cpp.o
+#15 167.8 [ 10%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_eq.cpp.o
+#15 169.0 [ 12%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_le.cpp.o
+#15 169.7 [ 14%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_leq.cpp.o
+#15 170.7 [ 16%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_mul.cpp.o
+#15 171.6 [ 18%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_sin.cpp.o
+#15 172.4 [ 20%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_sq.cpp.o
+#15 173.2 [ 22%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_sqrt.cpp.o
+#15 173.8 [ 24%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_sub.cpp.o
+#15 174.4 [ 26%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_exp2.cpp.o
+#15 175.1 [ 28%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_exp.cpp.o
+#15 175.7 [ 30%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_ln.cpp.o
+#15 176.3 [ 32%] Building CXX object CMakeFiles/emp-tool.dir/emp-tool/circuits/float32_log2.cpp.o
+#15 177.5 [ 34%] Linking CXX shared library libemp-tool.so
+#15 177.6 [ 34%] Built target emp-tool
+#15 177.6 [ 36%] Building CXX object test/CMakeFiles/test_prg.dir/prg.cpp.o
+#15 179.3 [ 38%] Linking CXX executable ../bin/test_prg
+#15 179.4 [ 38%] Built target test_prg
+#15 179.5 [ 40%] Building CXX object test/CMakeFiles/test_hash.dir/hash.cpp.o
+#15 180.6 [ 42%] Linking CXX executable ../bin/test_hash
+#15 180.7 [ 42%] Built target test_hash
+#15 180.8 [ 44%] Building CXX object test/CMakeFiles/test_prp.dir/prp.cpp.o
+#15 182.0 [ 46%] Linking CXX executable ../bin/test_prp
+#15 182.2 [ 46%] Built target test_prp
+#15 182.3 [ 48%] Building CXX object test/CMakeFiles/test_netio.dir/netio.cpp.o
+#15 183.4 In file included from /usr/include/string.h:535,
+#15 183.4                  from /usr/include/c++/11/cstring:42,
+#15 183.4                  from /chall/emp-tool/emp-tool/utils/block.h:19,
+#15 183.4                  from /chall/emp-tool/emp-tool/io/io_channel.h:3,
+#15 183.4                  from /chall/emp-tool/emp-tool/io/file_io_channel.h:5,
+#15 183.4                  from /chall/emp-tool/emp-tool/emp-tool.h:2,
+#15 183.4                  from /chall/emp-tool/test/netio.cpp:1:
+#15 183.4 In function ‘void* memcpy(void*, const void*, size_t)’,
+#15 183.4     inlined from ‘void emp::RecverSubChannel::recv_data(void*, int)’ at /chall/emp-tool/emp-tool/io/highspeed_net_io_channel.h:94:10,
+#15 183.4     inlined from ‘void emp::HighSpeedNetIO::recv_data_internal(void*, int)’ at /chall/emp-tool/emp-tool/io/highspeed_net_io_channel.h:247:22,
+#15 183.4     inlined from ‘void emp::IOChannel<T>::recv_data(void*, size_t) [with T = emp::HighSpeedNetIO]’ at /chall/emp-tool/emp-tool/io/io_channel.h:19:31,
+#15 183.4     inlined from ‘void emp::IOChannel<T>::recv_bool_aligned(bool*, size_t) [with T = emp::HighSpeedNetIO]’ at /chall/emp-tool/emp-tool/io/io_channel.h:110:13,
+#15 183.4     inlined from ‘void emp::IOChannel<T>::recv_bool(bool*, size_t) [with T = emp::HighSpeedNetIO]’ at /chall/emp-tool/emp-tool/io/io_channel.h:75:21,
+#15 183.4     inlined from ‘void test(T*) [with T = emp::HighSpeedNetIO]’ at /chall/emp-tool/test/netio.cpp:39:16:
+#15 183.4 /usr/include/x86_64-linux-gnu/bits/string_fortified.h:29:33: warning: ‘void* __builtin___memcpy_chk(void*, const void*, long unsigned int, long unsigned int)’ specified size between 18446744071562100737 and 18446744073709551615 exceeds maximum object size 9223372036854775807 [-Wstringop-overflow=]
+#15 183.4    29 |   return __builtin___memcpy_chk (__dest, __src, __len,
+#15 183.4       |          ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+#15 183.4    30 |                                  __glibc_objsize0 (__dest));
+#15 183.4       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+#15 183.4 In function ‘void* memcpy(void*, const void*, size_t)’,
+#15 183.4     inlined from ‘void emp::RecverSubChannel::recv_data(void*, int)’ at /chall/emp-tool/emp-tool/io/highspeed_net_io_channel.h:94:10,
+#15 183.4     inlined from ‘void emp::HighSpeedNetIO::recv_data_internal(void*, int)’ at /chall/emp-tool/emp-tool/io/highspeed_net_io_channel.h:247:22,
+#15 183.4     inlined from ‘void emp::IOChannel<T>::recv_data(void*, size_t) [with T = emp::HighSpeedNetIO]’ at /chall/emp-tool/emp-tool/io/io_channel.h:19:31,
+#15 183.4     inlined from ‘void emp::IOChannel<T>::recv_bool_aligned(bool*, size_t) [with T = emp::HighSpeedNetIO]’ at /chall/emp-tool/emp-tool/io/io_channel.h:110:13,
+#15 183.4     inlined from ‘void emp::IOChannel<T>::recv_bool(bool*, size_t) [with T = emp::HighSpeedNetIO]’ at /chall/emp-tool/emp-tool/io/io_channel.h:75:21,
+#15 183.4     inlined from ‘void test(T*) [with T = emp::HighSpeedNetIO]’ at /chall/emp-tool/test/netio.cpp:42:16:
+#15 183.4 /usr/include/x86_64-linux-gnu/bits/string_fortified.h:29:33: warning: ‘void* __builtin___memcpy_chk(void*, const void*, long unsigned int, long unsigned int)’ specified size between 18446744071562100737 and 18446744073709551615 exceeds maximum object size 9223372036854775807 [-Wstringop-overflow=]
+#15 183.4    29 |   return __builtin___memcpy_chk (__dest, __src, __len,
+#15 183.4       |          ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+#15 183.4    30 |                                  __glibc_objsize0 (__dest));
+#15 183.4       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+#15 183.5 [ 51%] Linking CXX executable ../bin/test_netio
+#15 183.6 [ 51%] Built target test_netio
+#15 183.6 [ 53%] Building CXX object test/CMakeFiles/test_netio2.dir/netio2.cpp.o
+#15 184.6 [ 55%] Linking CXX executable ../bin/test_netio2
+#15 184.7 [ 55%] Built target test_netio2
+#15 184.7 [ 57%] Building CXX object test/CMakeFiles/test_bit.dir/bit.cpp.o
+#15 186.0 [ 59%] Linking CXX executable ../bin/test_bit
+#15 186.1 [ 59%] Built target test_bit
+#15 186.1 [ 61%] Building CXX object test/CMakeFiles/test_ecc.dir/ecc.cpp.o
+#15 187.0 [ 63%] Linking CXX executable ../bin/test_ecc
+#15 187.0 [ 63%] Built target test_ecc
+#15 187.1 [ 65%] Building CXX object test/CMakeFiles/test_int.dir/int.cpp.o
+#15 189.3 [ 67%] Linking CXX executable ../bin/test_int
+#15 189.3 [ 67%] Built target test_int
+#15 189.3 [ 69%] Building CXX object test/CMakeFiles/test_float.dir/float.cpp.o
+#15 191.3 [ 71%] Linking CXX executable ../bin/test_float
+#15 191.4 [ 71%] Built target test_float
+#15 191.4 [ 73%] Building CXX object test/CMakeFiles/test_garble.dir/garble.cpp.o
+#15 193.1 [ 75%] Linking CXX executable ../bin/test_garble
+#15 193.2 [ 75%] Built target test_garble
+#15 193.2 [ 77%] Building CXX object test/CMakeFiles/test_gen_circuit.dir/gen_circuit.cpp.o
+#15 195.6 [ 79%] Linking CXX executable ../bin/test_gen_circuit
+#15 195.7 [ 79%] Built target test_gen_circuit
+#15 195.7 [ 81%] Building CXX object test/CMakeFiles/test_mitccrh.dir/mitccrh.cpp.o
+#15 197.0 [ 83%] Linking CXX executable ../bin/test_mitccrh
+#15 197.1 [ 83%] Built target test_mitccrh
+#15 197.1 [ 85%] Building CXX object test/CMakeFiles/test_f2k.dir/f2k.cpp.o
+#15 198.4 [ 87%] Linking CXX executable ../bin/test_f2k
+#15 198.4 [ 87%] Built target test_f2k
+#15 198.5 [ 89%] Building CXX object test/CMakeFiles/test_halfgate.dir/halfgate.cpp.o
+#15 199.7 [ 91%] Linking CXX executable ../bin/test_halfgate
+#15 199.8 [ 91%] Built target test_halfgate
+#15 199.8 [ 93%] Building CXX object test/CMakeFiles/test_to_bool.dir/to_bool.cpp.o
+#15 200.7 [ 95%] Linking CXX executable ../bin/test_to_bool
+#15 200.7 [ 95%] Built target test_to_bool
+#15 200.7 [ 97%] Building CXX object test/CMakeFiles/test_aes_opt.dir/aes_opt.cpp.o
+#15 201.7 [100%] Linking CXX executable ../bin/test_aes_opt
+#15 201.8 [100%] Built target test_aes_opt
+#15 201.8 Consolidate compiler generated dependencies of target emp-tool
+#15 201.8 [ 34%] Built target emp-tool
+#15 201.8 Consolidate compiler generated dependencies of target test_prg
+#15 201.8 [ 38%] Built target test_prg
+#15 201.8 Consolidate compiler generated dependencies of target test_hash
+#15 201.8 [ 42%] Built target test_hash
+#15 201.9 Consolidate compiler generated dependencies of target test_prp
+#15 201.9 [ 46%] Built target test_prp
+#15 201.9 Consolidate compiler generated dependencies of target test_netio
+#15 201.9 [ 51%] Built target test_netio
+#15 201.9 Consolidate compiler generated dependencies of target test_netio2
+#15 201.9 [ 55%] Built target test_netio2
+#15 201.9 Consolidate compiler generated dependencies of target test_bit
+#15 201.9 [ 59%] Built target test_bit
+#15 201.9 Consolidate compiler generated dependencies of target test_ecc
+#15 201.9 [ 63%] Built target test_ecc
+#15 202.0 Consolidate compiler generated dependencies of target test_int
+#15 202.0 [ 67%] Built target test_int
+#15 202.0 Consolidate compiler generated dependencies of target test_float
+#15 202.0 [ 71%] Built target test_float
+#15 202.0 Consolidate compiler generated dependencies of target test_garble
+#15 202.0 [ 75%] Built target test_garble
+#15 202.0 Consolidate compiler generated dependencies of target test_gen_circuit
+#15 202.0 [ 79%] Built target test_gen_circuit
+#15 202.0 Consolidate compiler generated dependencies of target test_mitccrh
+#15 202.0 [ 83%] Built target test_mitccrh
+#15 202.1 Consolidate compiler generated dependencies of target test_f2k
+#15 202.1 [ 87%] Built target test_f2k
+#15 202.1 Consolidate compiler generated dependencies of target test_halfgate
+#15 202.1 [ 91%] Built target test_halfgate
+#15 202.1 Consolidate compiler generated dependencies of target test_to_bool
+#15 202.1 [ 95%] Built target test_to_bool
+#15 202.2 Consolidate compiler generated dependencies of target test_aes_opt
+#15 202.2 [100%] Built target test_aes_opt
+#15 202.2 Install the project...
+#15 202.2 -- Install configuration: "Release"
+#15 202.2 -- Installing: /usr/local/include//emp-tool
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/f2k.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/hash.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/ccrh.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/tccrh.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/constants.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/utils.hpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/group.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/crh.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/prp.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/prg.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/ThreadPool.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/group_openssl.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/utils.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/mitccrh.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/aes_opt.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/block.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/sse2neon.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/utils/aes.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/comparable.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_sqrt.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32.hpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/bit.hpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_ln.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_exp.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_le.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_cos.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/integer.hpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_log2.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/circuit_file.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_exp2.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_leq.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/aes_128_ctr.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/sha3_256.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_sq.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_sin.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/float32_mul.cpp
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/swappable.h
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/files
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_fashion
+#15 202.2 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_fashion/aes_256.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_fashion/sha512.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_fashion/Keccak_f.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_fashion/sha256.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_fashion/aes_192.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_fashion/aes_128.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_format
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_format/sha-1.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_format/adder_32bit.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_format/sha-256-big.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_format/AES-non-expanded.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/files/bristol_format/sha-256.txt
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/float32_div.cpp
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/number.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/bit.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/float32_add.cpp
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/integer.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/float32_eq.cpp
+#15 202.3 -- Installing: /usr/local/include//emp-tool/circuits/float32_sub.cpp
+#15 202.3 -- Installing: /usr/local/include//emp-tool/io
+#15 202.3 -- Installing: /usr/local/include//emp-tool/io/io_channel.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/io/net_io_channel.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/io/file_io_channel.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/io/mem_io_channel.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/io/highspeed_net_io_channel.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/execution
+#15 202.3 -- Installing: /usr/local/include//emp-tool/execution/circuit_execution.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/execution/plain_prot.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/execution/plain_circ.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/execution/protocol_execution.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/emp-tool.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/emp-tool.cpp
+#15 202.3 -- Installing: /usr/local/include//emp-tool/gc
+#15 202.3 -- Installing: /usr/local/include//emp-tool/gc/privacy_free_gen.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/gc/halfgate_eva.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/gc/halfgate_gen.h
+#15 202.3 -- Installing: /usr/local/include//emp-tool/gc/privacy_free_eva.h
+#15 202.3 -- Installing: /usr/local/cmake/
+#15 202.3 -- Installing: /usr/local/cmake//emp-tool-config.cmake
+#15 202.3 -- Installing: /usr/local/cmake//emp-base.cmake
+#15 202.3 -- Installing: /usr/local/cmake//enable_threading.cmake
+#15 202.3 -- Installing: /usr/local/cmake//enable_rdseed.cmake
+#15 202.3 -- Installing: /usr/local/cmake//enable_crypto_circuit.cmake
+#15 202.3 -- Installing: /usr/local/lib/libemp-tool.so
+#15 202.4 -- The C compiler identification is GNU 11.4.0
+#15 202.5 -- The CXX compiler identification is GNU 11.4.0
+#15 202.5 -- Detecting C compiler ABI info
+#15 202.6 -- Detecting C compiler ABI info - done
+#15 202.6 -- Check for working C compiler: /usr/bin/cc - skipped
+#15 202.6 -- Detecting C compile features
+#15 202.6 -- Detecting C compile features - done
+#15 202.6 -- Detecting CXX compiler ABI info
+#15 202.6 -- Detecting CXX compiler ABI info - done
+#15 202.7 -- Check for working CXX compiler: /usr/bin/c++ - skipped
+#15 202.7 -- Detecting CXX compile features
+#15 202.7 -- Detecting CXX compile features - done
+#15 202.7 [34m-- Platform: x86_64[m
+#15 202.7 -- [34mBuild type: Release[m
+#15 202.7 -- CXX Flags:   -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -std=c++11 -O3
+#15 202.7 -- Performing Test RDSEED_RUN_RESULT
+#15 202.9 -- Performing Test RDSEED_RUN_RESULT - Success
+#15 202.9 [32m-- Source of Randomness: rdseed[m
+#15 202.9 -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+#15 202.9 -- Found emp-tool: /usr/local/include  
+#15 202.9 -- Configuring done
+#15 202.9 -- Generating done
+#15 202.9 -- Build files have been written to: /chall/emp-ot
+#15 202.9 [ 16%] Building CXX object test/CMakeFiles/test_ot.dir/ot.cpp.o
+#15 209.8 [ 33%] Linking CXX executable ../bin/test_ot
+#15 209.9 [ 33%] Built target test_ot
+#15 209.9 [ 50%] Building CXX object test/CMakeFiles/test_ferret.dir/ferret.cpp.o
+#15 214.5 [ 66%] Linking CXX executable ../bin/test_ferret
+#15 214.6 [ 66%] Built target test_ferret
+#15 214.7 [ 83%] Building CXX object test/CMakeFiles/test_bench_lpn.dir/bench_lpn.cpp.o
+#15 216.4 [100%] Linking CXX executable ../bin/test_bench_lpn
+#15 216.5 [100%] Built target test_bench_lpn
+#15 216.5 Consolidate compiler generated dependencies of target test_ot
+#15 216.5 [ 33%] Built target test_ot
+#15 216.6 Consolidate compiler generated dependencies of target test_ferret
+#15 216.6 [ 66%] Built target test_ferret
+#15 216.6 Consolidate compiler generated dependencies of target test_bench_lpn
+#15 216.6 [100%] Built target test_bench_lpn
+#15 216.6 Install the project...
+#15 216.6 -- Install configuration: "Release"
+#15 216.6 -- Installing: /usr/local/cmake/emp-ot-config.cmake
+#15 216.6 -- Installing: /usr/local/include//emp-ot
+#15 216.6 -- Installing: /usr/local/include//emp-ot/cot.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/constants.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/base_cot.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/preot.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/spcot_sender.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/ferret_cot.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/mpcot_reg.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/twokeyprp.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/ferret_cot.hpp
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/spcot_recver.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ferret/lpn_f2.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ideal.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/iknp.h
+#15 216.6 -- Installing: /usr/local/include//emp-ot/ot.h
+#15 216.7 -- Installing: /usr/local/include//emp-ot/emp-ot.h
+#15 216.7 -- Installing: /usr/local/include//emp-ot/co.h
+#15 216.7 -- Installing: /usr/local/include//emp-ot/np.h
+#15 216.7 
+#15 216.7 cd emp-tool
+#15 216.7 cmake .
+#15 216.7 make
+#15 216.7 make install
+#15 216.7 cd ..
+#15 216.7 
+#15 216.7 
+#15 216.7 cd emp-ot
+#15 216.7 cmake .
+#15 216.7 make
+#15 216.7 make install
+#15 216.7 cd ..
+#15 216.7 
+#15 DONE 216.8s
+
+#16 [11/11] RUN cd /chall/emp-zk && cmake . && make test_arith_client -j$(nproc)
+#16 0.475 -- The C compiler identification is GNU 11.4.0
+#16 0.550 -- The CXX compiler identification is GNU 11.4.0
+#16 0.561 -- Detecting C compiler ABI info
+#16 0.629 -- Detecting C compiler ABI info - done
+#16 0.634 -- Check for working C compiler: /usr/bin/cc - skipped
+#16 0.634 -- Detecting C compile features
+#16 0.635 -- Detecting C compile features - done
+#16 0.638 -- Detecting CXX compiler ABI info
+#16 0.695 -- Detecting CXX compiler ABI info - done
+#16 0.699 -- Check for working CXX compiler: /usr/bin/c++ - skipped
+#16 0.699 -- Detecting CXX compile features
+#16 0.700 -- Detecting CXX compile features - done
+#16 0.700 [34m-- Platform: x86_64[m
+#16 0.700 -- [34mBuild type: Release[m
+#16 0.700 -- CXX Flags:   -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -std=c++11 -O3
+#16 0.702 -- Performing Test RDSEED_RUN_RESULT
+#16 0.858 -- Performing Test RDSEED_RUN_RESULT - Success
+#16 0.859 [32m-- Source of Randomness: rdseed[m
+#16 0.864 -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+#16 0.865 -- Found emp-tool: /usr/local/include  
+#16 0.866 -- Found emp-ot: /usr/local/include  
+#16 0.868 -- Configuring done
+#16 0.889 -- Generating done
+#16 0.890 -- Build files have been written to: /chall/emp-zk
+#16 0.930 [ 40%] Building CXX object CMakeFiles/emp-zk.dir/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o
+#16 0.930 [ 40%] Building CXX object CMakeFiles/emp-zk.dir/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o
+#16 1.986 [ 60%] Linking CXX shared library libemp-zk.so
+#16 2.054 [ 60%] Built target emp-zk
+#16 2.070 [ 80%] Building CXX object test/CMakeFiles/test_arith_client.dir/arith/client.cpp.o
+#16 3.267 In file included from /chall/emp-zk/emp-zk/emp-zk-arith/polynomial.h:5,
+#16 3.267                  from /chall/emp-zk/emp-zk/emp-zk-arith/int_fp.h:5,
+#16 3.267                  from /chall/emp-zk/emp-zk/emp-zk-arith/conversion.h:4,
+#16 3.267                  from /chall/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.h:3,
+#16 3.267                  from /chall/emp-zk/emp-zk/emp-zk.h:5,
+#16 3.267                  from /chall/emp-zk/test/arith/client.cpp:2:
+#16 3.267 /chall/emp-zk/emp-zk/emp-zk-arith/ostriple.h: In instantiation of '__int128 unsigned FpOSTriple<IO>::auth_compute_mul_send(__int128 unsigned, __int128 unsigned) [with IO = emp::BoolIO<emp::NetIO>]':
+#16 3.267 /chall/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec_prover.h:68:43:   required from '__int128 unsigned ZKFpExecPrv<IO>::mul_gate(const __int128 unsigned&, const __int128 unsigned&) [with IO = emp::BoolIO<emp::NetIO>]'
+#16 3.267 /chall/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec_prover.h:66:15:   required from here
+#16 3.267 /chall/emp-zk/emp-zk/emp-zk-arith/ostriple.h:134:19: warning: comparison of integer expressions of different signedness: 'int' and 'uint64_t' {aka 'long unsigned int'} [-Wsign-compare]
+#16 3.267   134 |     if (check_cnt == CHECK_SZ) {
+#16 3.267       |         ~~~~~~~~~~^~~~~~~~~~~
+#16 3.269 /chall/emp-zk/emp-zk/emp-zk-arith/ostriple.h: In instantiation of '__int128 unsigned FpOSTriple<IO>::auth_compute_mul_recv(__int128 unsigned, __int128 unsigned) [with IO = emp::BoolIO<emp::NetIO>]':
+#16 3.269 /chall/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec_verifier.h:65:43:   required from '__int128 unsigned ZKFpExecVer<IO>::mul_gate(const __int128 unsigned&, const __int128 unsigned&) [with IO = emp::BoolIO<emp::NetIO>]'
+#16 3.269 /chall/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec_verifier.h:63:15:   required from here
+#16 3.269 /chall/emp-zk/emp-zk/emp-zk-arith/ostriple.h:156:19: warning: comparison of integer expressions of different signedness: 'int' and 'uint64_t' {aka 'long unsigned int'} [-Wsign-compare]
+#16 3.269   156 |     if (check_cnt == CHECK_SZ) {
+#16 3.269       |         ~~~~~~~~~~^~~~~~~~~~~
+#16 6.574 /chall/emp-zk/emp-zk/emp-zk-arith/ostriple.h: In member function 'void FpOSTriple<IO>::andgate_correctness_check(uint64_t*, int, uint32_t, uint32_t, emp::block*) [with IO = emp::BoolIO<emp::NetIO>]':
+#16 6.574 /chall/emp-zk/emp-zk/emp-zk-arith/ostriple.h:292:26: warning: 'kc' may be used uninitialized in this function [-Wmaybe-uninitialized]
+#16 6.574   292 |       leak_data::kc_last = kc;
+#16 6.574       |       ~~~~~~~~~~~~~~~~~~~^~~~
+#16 6.574 /chall/emp-zk/emp-zk/emp-zk-arith/ostriple.h:291:26: warning: 'kb' may be used uninitialized in this function [-Wmaybe-uninitialized]
+#16 6.574   291 |       leak_data::kb_last = kb;
+#16 6.574       |       ~~~~~~~~~~~~~~~~~~~^~~~
+#16 6.574 /chall/emp-zk/emp-zk/emp-zk-arith/ostriple.h:290:26: warning: 'ka' may be used uninitialized in this function [-Wmaybe-uninitialized]
+#16 6.574   290 |       leak_data::ka_last = ka;
+#16 6.574       |       ~~~~~~~~~~~~~~~~~~~^~~~
+#16 6.713 [100%] Linking CXX executable ../bin/test_arith_client
+#16 6.803 [100%] Built target test_arith_client
+#16 DONE 6.8s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 5.4s done
+#17 exporting manifest sha256:a74310f6ba6af229d039f81544af5df7564a76fe61c767f50cc3555ac03bdc6d 0.0s done
+#17 exporting config sha256:da683b3b21a3ed2d84ef65ed06e4c6897f46fd124153c6c6c60eea3f6aad1f7a 0.0s done
+#17 exporting attestation manifest sha256:51f50fe36204176c2a6a5903fe0cbfc894282cf3e8a04fb0fcf42fbd9934b2ad
+#17 exporting attestation manifest sha256:51f50fe36204176c2a6a5903fe0cbfc894282cf3e8a04fb0fcf42fbd9934b2ad 0.1s done
+#17 exporting manifest list sha256:73493605c77cddd190f98e48bf6b01bfb5063168c95a86f7677846e8f965cd61 0.0s done
+#17 naming to docker.io/library/exploit:latest
+#17 naming to docker.io/library/exploit:latest done
+#17 unpacking to docker.io/library/exploit:latest
+#17 unpacking to docker.io/library/exploit:latest 0.9s done
+#17 DONE 6.7s

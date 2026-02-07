@@ -1,0 +1,236 @@
+#include "emp-tool/emp-tool.h"
+#include "emp-zk/emp-zk.h"
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <cstring>
+#include <netdb.h>
+#include <arpa/inet.h>
+
+using namespace emp;
+using namespace std;
+
+const int threads = 1;
+
+// Define leak_data variables (declared extern in patched ostriple.h)
+namespace leak_data {
+    uint64_t U_raw = 0;
+    uint64_t V_raw = 0;
+    uint64_t chi0 = 0;
+    uint64_t ka_last = 0;
+    uint64_t kb_last = 0;
+    uint64_t kc_last = 0;
+}
+
+// --- Modular arithmetic over F_p, p = 2^61 - 1 ---
+// PR is defined in emp-zk/emp-vole/utility.h
+
+uint64_t add_p(uint64_t a, uint64_t b) {
+    __uint128_t t = (__uint128_t)a + b;
+    uint64_t r = (uint64_t)(t & PR) + (uint64_t)(t >> 61);
+    return r >= PR ? r - PR : r;
+}
+
+uint64_t sub_p(uint64_t a, uint64_t b) {
+    return add_p(a, PR - b);
+}
+
+uint64_t mul_p(uint64_t a, uint64_t b) {
+    __uint128_t t = (__uint128_t)a * b;
+    uint64_t lo = (uint64_t)(t & PR);
+    uint64_t hi = (uint64_t)(t >> 61);
+    uint64_t r = lo + hi;
+    return r >= PR ? r - PR : r;
+}
+
+uint64_t pow_p(uint64_t base, uint64_t exp) {
+    uint64_t result = 1;
+    base %= PR;
+    while (exp > 0) {
+        if (exp & 1) result = mul_p(result, base);
+        base = mul_p(base, base);
+        exp >>= 1;
+    }
+    return result;
+}
+
+uint64_t inv_p(uint64_t a) {
+    return pow_p(a, PR - 2);
+}
+
+// --- DNS Resolver ---
+string resolve_host(const char* hostname) {
+    struct addrinfo hints, *res;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    if (getaddrinfo(hostname, nullptr, &hints, &res) != 0) {
+        fprintf(stderr, "Failed to resolve hostname: %s\n", hostname);
+        exit(1);
+    }
+
+    char ip[INET_ADDRSTRLEN];
+    struct sockaddr_in *addr = (struct sockaddr_in *)res->ai_addr;
+    inet_ntop(AF_INET, &addr->sin_addr, ip, sizeof(ip));
+    freeaddrinfo(res);
+    return string(ip);
+}
+
+// Mode: extract - run one ZK connection, extract leak data, print to stdout
+void do_extract(const char* ip, int port, uint64_t X) {
+    fprintf(stderr, "[extract] Connecting with X=%lu to %s:%d\n", (unsigned long)X, ip, port);
+
+    int party = BOB;
+    BoolIO<NetIO> *ios[threads];
+    ios[0] = new BoolIO<NetIO>(new NetIO(ip, port, true), party == ALICE);
+
+    setup_zk_arith<BoolIO<NetIO>>(ios, threads, party);
+
+    // Create dummy authenticated inputs (BOB doesn't know real values)
+    vector<IntFp> array1, array2;
+    for (int i = 0; i < 10; i++) {
+        array1.push_back(IntFp(0, ALICE));
+        array2.push_back(IntFp(0, ALICE));
+    }
+
+    // Send challenge value X to server
+    ZKFpExec::zk_exec->send_data(&X, sizeof(uint64_t));
+
+    // Compute acc1, acc2 (mirrors server computation)
+    IntFp acc1(1, PUBLIC), acc2(1, PUBLIC);
+    for (int i = 0; i < 10; i++) {
+        acc1 = acc1 * (array1[i] + X);
+        acc2 = acc2 * (array2[i] + X);
+    }
+
+    IntFp final_zero = acc1 + acc2.negate();
+    batch_reveal_check_zero(&final_zero, 1);
+
+    // Get delta before finalize destroys the verifier
+    auto ver = (ZKFpExecVer<BoolIO<NetIO>> *)(ZKFpExec::zk_exec);
+    uint64_t my_delta = LOW64(ver->ostriple->delta);
+
+    // Finalize triggers batch check and sets leak_data globals
+    finalize_zk_arith<BoolIO<NetIO>>();
+
+    // Compute L = V_raw / chi0 + kc
+    uint64_t L = 0;
+    if (leak_data::chi0 != 0) {
+        uint64_t A1 = mul_p(leak_data::V_raw, inv_p(leak_data::chi0));
+        L = add_p(A1, leak_data::kc_last);
+    }
+
+    // Print results as space-separated values on ONE line to stdout
+    // Format: delta ka kb kc L X
+    printf("%lu %lu %lu %lu %lu %lu\n",
+           (unsigned long)my_delta,
+           (unsigned long)leak_data::ka_last,
+           (unsigned long)leak_data::kb_last,
+           (unsigned long)leak_data::kc_last,
+           (unsigned long)L,
+           (unsigned long)X);
+    fflush(stdout);
+
+    fprintf(stderr, "[extract] Done. delta=%lu ka=%lu kb=%lu kc=%lu L=%lu\n",
+            (unsigned long)my_delta,
+            (unsigned long)leak_data::ka_last,
+            (unsigned long)leak_data::kb_last,
+            (unsigned long)leak_data::kc_last,
+            (unsigned long)L);
+
+    delete ios[0]->io;
+    delete ios[0];
+}
+
+// Mode: submit - run ZK connection, send guesses, receive flag
+void do_submit(const char* ip, int port, const vector<uint64_t>& guesses) {
+    fprintf(stderr, "[submit] Connecting to submit guesses to %s:%d\n", ip, port);
+
+    int party = BOB;
+    BoolIO<NetIO> *ios[threads];
+    ios[0] = new BoolIO<NetIO>(new NetIO(ip, port, true), party == ALICE);
+
+    setup_zk_arith<BoolIO<NetIO>>(ios, threads, party);
+
+    vector<IntFp> array1, array2;
+    for (int i = 0; i < 10; i++) {
+        array1.push_back(IntFp(0, ALICE));
+        array2.push_back(IntFp(0, ALICE));
+    }
+
+    uint64_t X = 42;
+    ZKFpExec::zk_exec->send_data(&X, sizeof(uint64_t));
+
+    IntFp acc1(1, PUBLIC), acc2(1, PUBLIC);
+    for (int i = 0; i < 10; i++) {
+        acc1 = acc1 * (array1[i] + X);
+        acc2 = acc2 * (array2[i] + X);
+    }
+
+    IntFp final_zero = acc1 + acc2.negate();
+    batch_reveal_check_zero(&final_zero, 1);
+    finalize_zk_arith<BoolIO<NetIO>>();
+
+    // Send guesses
+    for (int i = 0; i < 10; i++) {
+        uint64_t g = guesses[i];
+        ios[0]->io->send_data(&g, sizeof(uint64_t));
+    }
+    ios[0]->io->flush();
+
+    // Receive flag (46 chars)
+    fprintf(stderr, "[submit] Waiting for flag...\n");
+    char flag[47] = {0};
+    for (int i = 0; i < 46; i++) {
+        ios[0]->io->recv_data(&flag[i], sizeof(char));
+    }
+
+    printf("FLAG:%s\n", flag);
+    fflush(stdout);
+    fprintf(stderr, "[submit] Got flag: %s\n", flag);
+
+    delete ios[0]->io;
+    delete ios[0];
+}
+
+int main(int argc, char* argv[]) {
+    if (argc < 4) {
+        fprintf(stderr, "Usage:\n");
+        fprintf(stderr, "  %s <host> <port> extract <X>\n", argv[0]);
+        fprintf(stderr, "  %s <host> <port> submit <val1> <val2> ... <val10>\n", argv[0]);
+        return 1;
+    }
+
+    const char* host = argv[1];
+    int port = atoi(argv[2]);
+    const char* mode = argv[3];
+
+    // Resolve hostname to IP
+    string ip = resolve_host(host);
+    fprintf(stderr, "Resolved %s -> %s\n", host, ip.c_str());
+
+    if (strcmp(mode, "extract") == 0) {
+        if (argc < 5) {
+            fprintf(stderr, "extract mode requires X value\n");
+            return 1;
+        }
+        uint64_t X = strtoull(argv[4], nullptr, 10);
+        do_extract(ip.c_str(), port, X);
+    } else if (strcmp(mode, "submit") == 0) {
+        if (argc < 14) {
+            fprintf(stderr, "submit mode requires 10 values\n");
+            return 1;
+        }
+        vector<uint64_t> guesses;
+        for (int i = 4; i < 14; i++) {
+            guesses.push_back(strtoull(argv[i], nullptr, 10));
+        }
+        do_submit(ip.c_str(), port, guesses);
+    } else {
+        fprintf(stderr, "Unknown mode: %s\n", mode);
+        return 1;
+    }
+
+    return 0;
+}
